@@ -36,6 +36,7 @@ describe("User API integration", () => {
     };
     const mockTokenRepo = {
       createAccessToken: jest.fn().mockResolvedValue({id: "123"}),
+      validToken: jest.fn().mockResolvedValue(true),
     };
 
     const controller = new UserController(mockUserRepo, mockTokenRepo);
@@ -62,6 +63,7 @@ describe("User API integration", () => {
     };
     const mockTokenRepo = {
       createAccessToken: jest.fn().mockResolvedValue({id: "123"}),
+      validToken: jest.fn().mockResolvedValue(true),
     };
 
     const controller = new UserController(mockUserRepo, mockTokenRepo);

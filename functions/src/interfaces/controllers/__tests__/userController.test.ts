@@ -38,6 +38,7 @@ describe("UserController", () => {
   };
   const mockTokenRepo = {
     createAccessToken: jest.fn().mockResolvedValue({id: "123"}),
+    validToken: jest.fn().mockResolvedValue(true),
   };
 
   beforeEach(() => {
