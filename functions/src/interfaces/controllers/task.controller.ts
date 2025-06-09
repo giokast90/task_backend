@@ -1,0 +1,33 @@
+import {Request, Response} from "express";
+import {TaskRepository} from "../../domain/repositories/taskRepository";
+
+// eslint-disable-next-line require-jsdoc
+export class TaskController {
+  // eslint-disable-next-line require-jsdoc
+  constructor(private taskRepo: TaskRepository) {}
+
+  getAll = async (req: Request, res: Response) => {
+    const tasks = await this.taskRepo.getAll();
+    res.json(tasks);
+  };
+
+  create = async (req: Request, res: Response) => {
+    const id = await this.taskRepo.create({...req.body, completed: false});
+    res.status(201).json({id});
+  };
+
+  update = async (req: Request, res: Response) => {
+    await this.taskRepo.update(req.params.id, req.body);
+    res.status(204);
+  };
+
+  delete = async (req: Request, res: Response) => {
+    await this.taskRepo.delete(req.params.id);
+    res.status(204);
+  };
+
+  markAsCompleted = async (req: Request, res: Response) => {
+    await this.taskRepo.markAsCompleted(req.params.id);
+    res.status(204);
+  };
+}
