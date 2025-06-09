@@ -34,8 +34,11 @@ describe("User API integration", () => {
       findByEmail: jest.fn().mockResolvedValue(null),
       create: jest.fn().mockResolvedValue(undefined),
     };
+    const mockTokenRepo = {
+      createAccessToken: jest.fn().mockResolvedValue({id: "123"}),
+    };
 
-    const controller = new UserController(mockUserRepo);
+    const controller = new UserController(mockUserRepo, mockTokenRepo);
     const app = express();
     app.use(bodyParser.json());
     app.post("/users", (req, res) => controller.create(req, res));
@@ -44,11 +47,12 @@ describe("User API integration", () => {
       .post("/users").send({email: "test@example.com"});
 
     expect(res.status).toBe(201);
-    expect(res.body.email).toBe("test@example.com");
-    expect(res.body.id).toBeDefined();
+    // eslint-disable-next-line max-len
+    expect(res.body).toEqual(expect.objectContaining({accessToken: expect.any(String)}));
 
     expect(mockUserRepo.findByEmail).toHaveBeenCalledWith("test@example.com");
-    expect(mockUserRepo.create).toHaveBeenCalledWith("test@example.com");
+    // eslint-disable-next-line max-len
+    expect(mockUserRepo.create).toHaveBeenCalledWith({email: "test@example.com", id: expect.any(String)});
   });
   it("POST /users/login -> should return token for existing user", async () => {
     const email = "existing@example.com";
@@ -56,8 +60,11 @@ describe("User API integration", () => {
       findByEmail: jest.fn().mockResolvedValue({id: "abc123", email}),
       create: jest.fn().mockResolvedValue(undefined),
     };
+    const mockTokenRepo = {
+      createAccessToken: jest.fn().mockResolvedValue({id: "123"}),
+    };
 
-    const controller = new UserController(mockUserRepo);
+    const controller = new UserController(mockUserRepo, mockTokenRepo);
     const app = express();
     app.use(bodyParser.json());
     app.post("/users/login", (req, res) => controller.login(req, res));
@@ -66,7 +73,8 @@ describe("User API integration", () => {
       .post("/users/login")
       .send({email});
 
-    expect(res.statusCode).toBe(200);
-    expect(res.body.token).toBe("mocked-token-for-abc123");
+    expect(res.status).toBe(200);
+    // eslint-disable-next-line max-len
+    expect(res.body).toEqual(expect.objectContaining({accessToken: expect.any(String)}));
   });
 });

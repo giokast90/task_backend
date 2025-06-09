@@ -36,9 +36,12 @@ describe("UserController", () => {
     findByEmail: jest.fn().mockResolvedValue(null),
     create: jest.fn().mockResolvedValue(undefined),
   };
+  const mockTokenRepo = {
+    createAccessToken: jest.fn().mockResolvedValue({id: "123"}),
+  };
 
   beforeEach(() => {
-    controller = new UserController(mockUserRepo);
+    controller = new UserController(mockUserRepo, mockTokenRepo);
     json = jest.fn();
     status = jest.fn().mockReturnValue({json});
     res = {status, json};
@@ -64,6 +67,7 @@ describe("UserController", () => {
     jest.spyOn(controller["userRepo"], "findByEmail")
       .mockResolvedValue({id: "abc123", email: "test@example.com"});
     await controller.login(req as Request, res as Response);
-    expect(json).toHaveBeenCalledWith({token: "mocked-token-for-abc123"});
+    // eslint-disable-next-line max-len
+    expect(json).toHaveBeenCalledWith(expect.objectContaining({accessToken: expect.any(String)}));
   });
 });
