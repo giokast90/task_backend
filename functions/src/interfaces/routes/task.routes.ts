@@ -1,12 +1,13 @@
 import {Router} from "express";
-import {authMiddleware} from "../middlewares/authMiddleware";
+import * as middleware from "../middlewares/authMiddleware";
 import {TaskController} from "../controllers/task.controller";
 import {TaskFirestore} from "../../infrastructure/firestore/taskFirestore";
 
 // eslint-disable-next-line new-cap
 const router = Router();
 const controller = new TaskController(new TaskFirestore());
-router.use(authMiddleware); // Applying to all task routes
+// eslint-disable-next-line import/namespace
+router.use(middleware.passportAuthenticate); // Applying to all task routes
 
 router.get("/", (req, res) => controller.getAll(req, res));
 router.post("/", (req, res)=> controller.create(req, res));
