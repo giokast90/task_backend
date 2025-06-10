@@ -1,3 +1,9 @@
+/**
+ * @file Integration tests for the User API.
+ * This file contains tests for the following endpoints:
+ * - POST /users: Handles the creation of new users and token generation.
+ * - POST /users/login: Handles user login and returns a valid access token.
+ */
 import request from "supertest";
 import express from "express";
 import bodyParser from "body-parser";
@@ -29,6 +35,11 @@ jest.mock("firebase-admin", () => {
 });
 
 describe("User API integration", () => {
+  /**
+   * Test for the POST /users endpoint.
+   * This test verifies the functionality of creating a new user
+   * and receiving an access token upon successful creation.
+   */
   it("POST /users -> should create new user", async () => {
     const mockUserRepo = {
       findByEmail: jest.fn().mockResolvedValue(null),
@@ -55,6 +66,11 @@ describe("User API integration", () => {
     // eslint-disable-next-line max-len
     expect(mockUserRepo.create).toHaveBeenCalledWith({email: "test@example.com", id: expect.any(String)});
   });
+  /**
+   * Test for the POST /users/login endpoint.
+   * Ensures that an existing user can successfully log in
+   * and receive a valid access token in the response.
+   */
   it("POST /users/login -> should return token for existing user", async () => {
     const email = "existing@example.com";
     const mockUserRepo = {
