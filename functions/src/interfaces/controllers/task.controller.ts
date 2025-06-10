@@ -33,7 +33,7 @@ export class TaskController {
 
   delete = async (req: Request, res: Response) => {
     await this.taskRepo.delete(req.params.id);
-    res.status(204).json({message: "Task deleted"});
+    res.status(204).send({message: "Task deleted"});
   };
 
   markAsCompleted = async (req: Request, res: Response) => {
