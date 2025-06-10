@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {TaskRepository} from "../../domain/repositories/taskRepository";
-import { v4 as uuidv4 } from "uuid";
+import {v4 as uuidv4} from "uuid";
 
 // eslint-disable-next-line require-jsdoc
 export class TaskController {
