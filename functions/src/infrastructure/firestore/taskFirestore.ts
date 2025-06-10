@@ -29,16 +29,28 @@ export class TaskFirestore implements TaskRepository {
 
   // eslint-disable-next-line require-jsdoc
   async update(id: string, task: Partial<Task>): Promise<void> {
-    await taskCollection.doc(id).update(task);
+    const snapshot = await taskCollection.where("id", "==", id)
+      .limit(1)
+      .get();
+    if (snapshot.empty) return;
+    await snapshot.docs[0].ref.update(task);
   }
 
   // eslint-disable-next-line require-jsdoc
   async delete(id: string): Promise<void> {
-    await taskCollection.doc(id).delete();
+    const snapshot = await taskCollection.where("id", "==", id)
+      .limit(1)
+      .get();
+    if (snapshot.empty) return;
+    await snapshot.docs[0].ref.delete();
   }
 
   // eslint-disable-next-line require-jsdoc
   async markAsCompleted(id: string): Promise<void> {
-    await taskCollection.doc(id).update({completed: true});
+    const snapshot = await taskCollection.where("id", "==", id)
+      .limit(1)
+      .get();
+    if (snapshot.empty) return;
+    await snapshot.docs[0].ref.update({completed: true});
   }
 }
