@@ -1,3 +1,9 @@
+/**
+ * Integration tests for the Task API.
+ * These tests verify the interaction between the TaskController,
+ * the repository layer (mocked), and the Express application
+ * to handle tasks efficiently.
+ */
 import request from "supertest";
 import {TaskController} from "../interfaces/controllers/task.controller";
 import {Task} from "../domain/models/task";
@@ -33,6 +39,11 @@ describe("Task API integration", () => {
   const token = "mocked-token";
   let createdTaskId = "new_task_id";
 
+  /**
+   * Integration test for creating a task using POST /tasks endpoint.
+   * Verifies that a task is created with the correct properties and
+   * a valid response is returned.
+   */
   it("POST /tasks -> should create a task", async () => {
     const mockTaskRepo = {
       getAll: jest.fn(),
@@ -56,6 +67,11 @@ describe("Task API integration", () => {
     createdTaskId = response.body.id;
   });
 
+  /**
+   * Integration test for retrieving all tasks using GET /tasks endpoint.
+   * Ensures that the retrieved tasks match the expected criteria,
+   * particularly checking for a specific task by ID and its completion status.
+   */
   it("GET /tasks -> should retrieve all tasks (completed: true)", async () => {
     const mockTaskRepo = {
       getAll: jest.fn().mockReturnValue([{id: createdTaskId, completed: true}]),
