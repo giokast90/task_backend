@@ -28,16 +28,16 @@ export class TaskController {
 
   update = async (req: Request, res: Response) => {
     await this.taskRepo.update(req.params.id, req.body);
-    res.status(204);
+    res.status(204).json({message: "Task updated"});
   };
 
   delete = async (req: Request, res: Response) => {
     await this.taskRepo.delete(req.params.id);
-    res.status(204);
+    res.status(204).json({message: "Task deleted"});
   };
 
   markAsCompleted = async (req: Request, res: Response) => {
     await this.taskRepo.markAsCompleted(req.params.id);
-    res.status(204);
+    res.status(204).json({message: "Task marked as completed"});
   };
 }
