@@ -36,6 +36,7 @@ describe("Task API integration", () => {
   it("POST /tasks -> should create a task", async () => {
     const mockTaskRepo = {
       getAll: jest.fn(),
+      getById: jest.fn(),
       create: jest.fn().mockReturnValue(createdTaskId),
       update: jest.fn(),
       delete: jest.fn(),
@@ -58,6 +59,7 @@ describe("Task API integration", () => {
   it("GET /tasks -> should retrieve all tasks (completed: true)", async () => {
     const mockTaskRepo = {
       getAll: jest.fn().mockReturnValue([{id: createdTaskId, completed: true}]),
+      getById: jest.fn(),
       create: jest.fn(),
       update: jest.fn(),
       delete: jest.fn(),
