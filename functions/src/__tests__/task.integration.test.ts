@@ -52,7 +52,7 @@ describe("Task API integration", () => {
       .send({title: "Test task", description: "Test description"});
 
     expect(response.status).toBe(201);
-    expect(response.body.id).toBe(createdTaskId);
+    expect(response.body.id).toEqual(expect.any(String));
     createdTaskId = response.body.id;
   });
 
