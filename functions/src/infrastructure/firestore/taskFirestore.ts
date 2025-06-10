@@ -12,6 +12,15 @@ export class TaskFirestore implements TaskRepository {
   }
 
   // eslint-disable-next-line require-jsdoc
+  async getById(id: string): Promise<Task | null> {
+    const snapshot = await taskCollection.where("id", "==", id)
+      .limit(1)
+      .get();
+    if (snapshot.empty) return null;
+    return snapshot.docs[0].data() as Task;
+  }
+
+  // eslint-disable-next-line require-jsdoc
   async create(task: Task): Promise<string> {
     if (!task.createdAt) task.createdAt = new Date();
     const ref = await taskCollection.add(task);

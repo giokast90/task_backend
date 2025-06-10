@@ -11,6 +11,14 @@ export class TaskController {
     res.json(tasks);
   };
 
+  getById = async (req: Request, res: Response) => {
+    const task = await this.taskRepo.getById(req.params.id);
+    if (!task) {
+      res.status(404).json({message: "Task not found"});
+    }
+    res.json(task);
+  };
+
   create = async (req: Request, res: Response) => {
     const id = await this.taskRepo.create({...req.body, completed: false});
     res.status(201).json({id});
